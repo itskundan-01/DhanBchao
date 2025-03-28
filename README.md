@@ -9,12 +9,20 @@ DhanBchao is a web application that helps users make informed purchasing decisio
 - **Rating Systems**: Clear visualization of product ratings and user satisfaction
 - **Personalized Recommendations**: Suggest products based on user preferences and browsing history
 - **Price Drop Alerts**: Notify users when products they're interested in go on sale
+- **Loot Deals**: Limited-time offers with massive discounts, flash sales, and clearance items with countdown timers
+
+## Loot Deals Feature
+Our new Loot Deals section showcases heavily discounted products with limited-time availability:
+- **Time-Limited Offers**: Deals that expire quickly with real-time countdown timers
+- **Massive Discounts**: Verified discounts up to 80% off regular prices
+- **Stock Tracking**: See how much stock is remaining for each deal
+- **Advanced Filtering**: Filter deals by category, brand, price range, and discount percentage
+- **Real-time Updates**: Deals are updated hourly to ensure you never miss out
 
 ## Technology Stack
 - **Frontend**: 
   - React.js
-  - HTML5 & CSS3
-  - Material UI / Tailwind CSS
+  - Material UI
   - Redux for state management
 - **Backend**: 
   - Node.js
@@ -23,7 +31,10 @@ DhanBchao is a web application that helps users make informed purchasing decisio
 - **Database**: 
   - MongoDB for product and user data
   - Redis for caching
-- **APIs**: E-commerce platform APIs for product data
+- **AI Components**:
+  - Price tracking algorithms
+  - Review sentiment analysis
+  - Recommendation engine
 - **Deployment**: 
   - Docker containers
   - CI/CD with GitHub Actions
@@ -68,4 +79,4 @@ Guidelines for contributing to the project will be added soon.
 MIT License
 
 ## Contact
-[Your contact information]
+LinkedIn - https://www.linkedin.com/in/itskundankumar/
