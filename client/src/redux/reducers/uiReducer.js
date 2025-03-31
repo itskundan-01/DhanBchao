@@ -1,16 +1,10 @@
-import {
-  SHOW_TOAST,
-  CLEAR_TOAST,
-  SET_LOADING,
-  CLEAR_LOADING
-} from '../actions/types';
+import { SHOW_TOAST, CLEAR_TOAST, SET_LOADING, CLEAR_LOADING } from '../actions/types';
 
 const initialState = {
   toast: {
     open: false,
     message: '',
-    severity: 'info',
-    duration: 3000
+    type: 'info' 
   },
   loading: {}
 };
@@ -25,11 +19,10 @@ const uiReducer = (state = initialState, action) => {
         toast: {
           open: true,
           message: payload.message,
-          severity: payload.severity,
-          duration: payload.duration
+          type: payload.type
         }
       };
-
+    
     case CLEAR_TOAST:
       return {
         ...state,
@@ -38,25 +31,25 @@ const uiReducer = (state = initialState, action) => {
           open: false
         }
       };
-
+    
     case SET_LOADING:
       return {
         ...state,
         loading: {
           ...state.loading,
-          [payload.key]: payload.isLoading
+          [payload]: true
         }
       };
-
+    
     case CLEAR_LOADING:
-      const newLoading = { ...state.loading };
-      delete newLoading[payload.key];
-      
       return {
         ...state,
-        loading: newLoading
+        loading: {
+          ...state.loading,
+          [payload]: false
+        }
       };
-
+    
     default:
       return state;
   }

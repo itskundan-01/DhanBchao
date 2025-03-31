@@ -10,7 +10,10 @@ import {
   SEARCH_PRODUCTS_FAIL,
   COMPARE_PRODUCTS_REQUEST,
   COMPARE_PRODUCTS_SUCCESS,
-  COMPARE_PRODUCTS_FAIL
+  COMPARE_PRODUCTS_FAIL,
+  ADD_TO_COMPARE,
+  REMOVE_FROM_COMPARE,
+  CLEAR_COMPARE
 } from '../actions/types';
 
 const initialState = {
@@ -18,6 +21,7 @@ const initialState = {
   product: null,
   searchResults: [],
   comparisonProducts: [],
+  compareList: [], // For locally stored products for comparison
   loading: {
     products: false,
     product: false,
@@ -109,6 +113,21 @@ const productReducer = (state = initialState, action) => {
         ...state,
         loading: { ...state.loading, compare: false },
         error: payload
+      };
+    case ADD_TO_COMPARE:
+      return {
+        ...state,
+        compareList: [...state.compareList, payload]
+      };
+    case REMOVE_FROM_COMPARE:
+      return {
+        ...state,
+        compareList: state.compareList.filter(product => product.id !== payload)
+      };
+    case CLEAR_COMPARE:
+      return {
+        ...state,
+        compareList: []
       };
     default:
       return state;

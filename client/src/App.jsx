@@ -8,6 +8,7 @@ import theme from './theme';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import ProductDetails from './pages/ProductDetails';
 import Compare from './pages/Compare';
 import Profile from './pages/Profile';
@@ -18,6 +19,15 @@ import LootDeals from './pages/LootDeals';
 import { loadUser } from './redux/actions/authActions';
 import PrivateRoute from './components/routing/PrivateRoute';
 import Toast from './components/ui/Toast';
+
+// New page imports
+import HowItWorks from './pages/HowItWorks';
+import FAQ from './pages/FAQ';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import Contact from './pages/Contact';
 
 function App() {
   const dispatch = useDispatch();
@@ -33,9 +43,9 @@ function App() {
   useEffect(() => {
     if (error && !isAuthenticated) {
       const currentPath = window.location.pathname;
-      // Check if trying to access protected routes
-      const protectedRoutes = ['/profile'];
+      const protectedRoutes = ['/profile', '/dashboard'];
       
+      // Check if trying to access protected routes
       if (protectedRoutes.some(route => currentPath.startsWith(route))) {
         navigate('/auth', { state: { from: currentPath } });
       }
@@ -50,6 +60,11 @@ function App() {
         <main style={{ flexGrow: 1 }}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            } />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/compare" element={<Compare />} />
             <Route path="/profile" element={
@@ -62,6 +77,17 @@ function App() {
             <Route path="/categories/:category" element={<Categories />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="/loot-deals" element={<LootDeals />} />
+            
+            {/* New Pages */}
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            
+            {/* Legal Pages */}
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
         <Footer />

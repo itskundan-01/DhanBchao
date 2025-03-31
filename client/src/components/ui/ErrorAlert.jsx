@@ -1,15 +1,11 @@
 import React from 'react';
-import { Alert, AlertTitle, Box } from '@mui/material';
+import { Alert, Box } from '@mui/material';
 
 const ErrorAlert = ({ error }) => {
-  // Don't render if there's no error
-  if (!error) return null;
-
   return (
-    <Box sx={{ my: 2 }}>
-      <Alert severity="error">
-        <AlertTitle>Error</AlertTitle>
-        {typeof error === 'string' ? error : 'An unexpected error occurred.'}
+    <Box sx={{ my: 3 }}>
+      <Alert severity="error" variant="outlined">
+        {error || 'An error occurred. Please try again later.'}
       </Alert>
     </Box>
   );

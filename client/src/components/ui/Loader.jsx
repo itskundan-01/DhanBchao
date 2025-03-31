@@ -1,23 +1,22 @@
 import React from 'react';
-import { CircularProgress, Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 const Loader = ({ text = 'Loading...' }) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
+    <Box 
+      sx={{ 
+        display: 'flex', 
         flexDirection: 'column',
+        justifyContent: 'center', 
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: 3,
+        minHeight: '200px',
+        py: 6
       }}
     >
-      <CircularProgress size={50} thickness={4} />
-      {text && (
-        <Typography variant="body1" sx={{ mt: 2 }}>
-          {text}
-        </Typography>
-      )}
+      <CircularProgress />
+      <Typography variant="body1" sx={{ mt: 2 }}>
+        {text}
+      </Typography>
     </Box>
   );
 };

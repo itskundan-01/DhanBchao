@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { 
-  Container, Typography, Grid, Paper, Box, 
-  Table, TableBody, TableCell, TableContainer, 
-  TableHead, TableRow, TextField, Autocomplete,
-  Button, Chip, Rating, IconButton
+import { useNavigate } from 'react-router-dom';
+import {
+  Container, Typography, Grid, Box, Button, Paper, Table,
+  TableBody, TableCell, TableContainer, TableHead, TableRow,
+  TextField, IconButton, Chip, Autocomplete
 } from '@mui/material';
-import { Delete, CompareArrows, Add } from '@mui/icons-material';
+import {
+  Delete, Add, CompareArrows, ArrowBackIos, Clear
+} from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeFromCompare, clearCompare, fetchProduct } from '../redux/actions/productActions';
+import Loader from '../components/ui/Loader';
+import ErrorAlert from '../components/ui/ErrorAlert';
 
-// Placeholder data for demonstration
+// Note: This sample data will be replaced with data from Redux state after API integration
 const sampleProducts = [
   {
     id: 'product1',
@@ -60,7 +66,7 @@ const sampleProducts = [
     averageRating: 4.6,
     prices: {
       'Amazon': 749,
-      'Flipkart': 759,
+      'Flipkart': 779,
       'Croma': 799
     },
     specifications: {
@@ -78,29 +84,51 @@ const specOrder = ['Display', 'Processor', 'RAM', 'Storage', 'Camera', 'Battery'
 const stores = ['Amazon', 'Flipkart', 'Croma'];
 
 const Compare = () => {
-  const [productsToCompare, setProductsToCompare] = useState(sampleProducts.slice(0, 2));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  // Get comparison products from Redux state
+  const { products, compareList, loading, error } = useSelector(state => state.products);
+  
   const [productToAdd, setProductToAdd] = useState(null);
 
+  // For now, use compareList from Redux if it exists, otherwise use sample data
+  const productsToCompare = compareList.length > 0 ? compareList : sampleProducts.slice(0, 2);
+
   const handleAddProduct = () => {
-    if (productToAdd && !productsToCompare.some(p => p.id === productToAdd.id)) {
-      setProductsToCompare([...productsToCompare, productToAdd]);
+    if (productToAdd) {
+      dispatch(fetchProduct(productToAdd.id));
       setProductToAdd(null);
     }
   };
 
   const handleRemoveProduct = (productId) => {
-    setProductsToCompare(productsToCompare.filter(p => p.id !== productId));
+    dispatch(removeFromCompare(productId));
+  };
+
+  const handleClearComparison = () => {
+    dispatch(clearCompare());
   };
 
   const getBestPrice = (product) => {
-    const prices = Object.values(product.prices);
-    return Math.min(...prices);
+    const prices = Object.values(product.prices || {});
+    return prices.length > 0 ? Math.min(...prices) : 'N/A';
   };
 
   const getBestStore = (product) => {
+    if (!product.prices) return 'N/A';
     const bestPrice = getBestPrice(product);
-    return Object.entries(product.prices).find(([_, price]) => price === bestPrice)[0];
+    const bestStoreEntry = Object.entries(product.prices).find(([_, price]) => price === bestPrice);
+    return bestStoreEntry ? bestStoreEntry[0] : 'N/A';
   };
+
+  if (loading?.compare) {
+    return <Loader text="Loading comparison data..." />;
+  }
+
+  if (error) {
+    return <ErrorAlert error={error} />;
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -108,12 +136,20 @@ const Compare = () => {
         Compare Products
       </Typography>
       
+      <Button 
+        startIcon={<ArrowBackIos />} 
+        onClick={() => navigate(-1)} 
+        sx={{ mb: 3 }}
+      >
+        Back to Shopping
+      </Button>
+      
       {/* Product Selection */}
       <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={6}>
             <Autocomplete
-              options={sampleProducts.filter(p => !productsToCompare.some(cp => cp.id === p.id))}
+              options={products.filter(p => !compareList.some(cp => cp.id === p.id))}
               getOptionLabel={(option) => option.name}
               value={productToAdd}
               onChange={(_, newValue) => setProductToAdd(newValue)}
@@ -135,116 +171,139 @@ const Compare = () => {
 
       {/* Comparison Table */}
       {productsToCompare.length > 0 ? (
-        <TableContainer component={Paper} elevation={3}>
-          <Table>
-            {/* Header */}
-            <TableHead>
-              <TableRow>
-                <TableCell>Features</TableCell>
-                {productsToCompare.map((product) => (
-                  <TableCell key={product.id} align="center" sx={{ minWidth: 200 }}>
-                    <Box sx={{ position: 'relative' }}>
-                      <IconButton 
-                        size="small" 
-                        sx={{ position: 'absolute', top: 0, right: 0 }}
-                        onClick={() => handleRemoveProduct(product.id)}
-                      >
-                        <Delete fontSize="small" />
-                      </IconButton>
-                      <Box
-                        component="img"
-                        src={product.image}
-                        alt={product.name}
-                        sx={{ 
-                          width: 120, 
-                          height: 120, 
-                          objectFit: 'contain',
-                          display: 'block',
-                          mx: 'auto',
-                          mb: 2
-                        }}
-                      />
-                      <Typography variant="subtitle1" gutterBottom>
-                        {product.name}
-                      </Typography>
-                      <Chip 
-                        label={`Best: ₹${getBestPrice(product)} at ${getBestStore(product)}`} 
-                        color="primary" 
-                        size="small" 
-                      />
-                    </Box>
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            
-            {/* Body */}
-            <TableBody>
-              {/* Basic Info */}
-              <TableRow>
-                <TableCell component="th" scope="row">Brand</TableCell>
-                {productsToCompare.map((product) => (
-                  <TableCell key={product.id} align="center">
-                    {product.brand}
-                  </TableCell>
-                ))}
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">Rating</TableCell>
-                {productsToCompare.map((product) => (
-                  <TableCell key={product.id} align="center">
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                      <Rating value={product.averageRating} precision={0.1} readOnly size="small" />
-                    </Box>
-                  </TableCell>
-                ))}
-              </TableRow>
-
-              {/* Prices */}
-              <TableRow>
-                <TableCell colSpan={productsToCompare.length + 1} sx={{ bgcolor: 'background.default' }}>
-                  <Typography variant="h6">Price Comparison</Typography>
-                </TableCell>
-              </TableRow>
-              {stores.map((store) => (
-                <TableRow key={store}>
-                  <TableCell component="th" scope="row">{store}</TableCell>
+        <>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<Clear />}
+              onClick={handleClearComparison}
+            >
+              Clear All
+            </Button>
+          </Box>
+          
+          <TableContainer component={Paper} elevation={3}>
+            <Table>
+              {/* Header */}
+              <TableHead>
+                <TableRow>
+                  <TableCell>Features</TableCell>
                   {productsToCompare.map((product) => (
-                    <TableCell key={product.id} align="center">
-                      ₹{product.prices[store] || 'N/A'}
-                      {product.prices[store] && 
-                        product.prices[store] === getBestPrice(product) && 
-                        <Chip 
-                          label="Best Price" 
-                          color="secondary" 
+                    <TableCell key={product.id} align="center" sx={{ minWidth: 200 }}>
+                      <Box sx={{ position: 'relative' }}>
+                        <IconButton 
                           size="small" 
-                          sx={{ ml: 1 }}
+                          sx={{ position: 'absolute', top: 0, right: 0 }}
+                          onClick={() => handleRemoveProduct(product.id)}
+                        >
+                          <Delete fontSize="small" />
+                        </IconButton>
+                        <Box
+                          component="img"
+                          src={product.image}
+                          alt={product.name}
+                          sx={{ 
+                            width: 120, 
+                            height: 120, 
+                            objectFit: 'contain',
+                            display: 'block',
+                            mx: 'auto',
+                            mb: 2
+                          }}
                         />
-                      }
+                        <Typography variant="subtitle1" gutterBottom>
+                          {product.name}
+                        </Typography>
+                        <Chip 
+                          label={`Best: ₹${getBestPrice(product)} at ${getBestStore(product)}`} 
+                          color="primary" 
+                          size="small" 
+                        />
+                      </Box>
                     </TableCell>
                   ))}
                 </TableRow>
-              ))}
-
-              {/* Specifications */}
-              <TableRow>
-                <TableCell colSpan={productsToCompare.length + 1} sx={{ bgcolor: 'background.default' }}>
-                  <Typography variant="h6">Specifications</Typography>
-                </TableCell>
-              </TableRow>
-              {specOrder.map((spec) => (
-                <TableRow key={spec}>
-                  <TableCell component="th" scope="row">{spec}</TableCell>
+              </TableHead>
+              
+              {/* Body */}
+              <TableBody>
+                {/* Basic Info */}
+                <TableRow>
+                  <TableCell component="th" scope="row">Brand</TableCell>
                   {productsToCompare.map((product) => (
                     <TableCell key={product.id} align="center">
-                      {product.specifications[spec] || 'N/A'}
+                      {product.brand}
                     </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                <TableRow>
+                  <TableCell component="th" scope="row">Category</TableCell>
+                  {productsToCompare.map((product) => (
+                    <TableCell key={product.id} align="center">
+                      {product.category}
+                    </TableCell>
+                  ))}
+                </TableRow>
+                <TableRow>
+                  <TableCell component="th" scope="row">Rating</TableCell>
+                  {productsToCompare.map((product) => (
+                    <TableCell key={product.id} align="center">
+                      {product.averageRating} / 5
+                    </TableCell>
+                  ))}
+                </TableRow>
+                
+                {/* Price Comparison */}
+                <TableRow>
+                  <TableCell component="th" scope="row" colSpan={productsToCompare.length + 1}>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Price Comparison
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+                {stores.map((store) => (
+                  <TableRow key={store}>
+                    <TableCell component="th" scope="row">{store}</TableCell>
+                    {productsToCompare.map((product) => (
+                      <TableCell key={product.id} align="center">
+                        {product.prices && product.prices[store] ? (
+                          <Typography 
+                            fontWeight={getBestStore(product) === store ? 'bold' : 'normal'}
+                            color={getBestStore(product) === store ? 'primary' : 'inherit'}
+                          >
+                            ₹{product.prices[store]}
+                          </Typography>
+                        ) : (
+                          'N/A'
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+                
+                {/* Specifications */}
+                <TableRow>
+                  <TableCell component="th" scope="row" colSpan={productsToCompare.length + 1}>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Specifications
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+                {specOrder.map((spec) => (
+                  <TableRow key={spec}>
+                    <TableCell component="th" scope="row">{spec}</TableCell>
+                    {productsToCompare.map((product) => (
+                      <TableCell key={product.id} align="center">
+                        {product.specifications && product.specifications[spec] ? product.specifications[spec] : 'N/A'}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       ) : (
         <Paper elevation={3} sx={{ p: 5, textAlign: 'center' }}>
           <CompareArrows sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
