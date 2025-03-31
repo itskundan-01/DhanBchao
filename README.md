@@ -1,7 +1,7 @@
-# DhanBchao - Product Comparison & Recommendation Platform
+# MahaLoot - Product Comparison & Recommendation Platform
 
 ## Overview
-DhanBchao is a web application that helps users make informed purchasing decisions by comparing prices, reviews, and ratings across multiple e-commerce platforms. The service recommends products based on these criteria, helping users save money and find the best products.
+MahaLoot is a web application that helps users make informed purchasing decisions by comparing prices, reviews, and ratings across multiple e-commerce platforms. The service recommends products based on these criteria, helping users save money and find the best products.
 
 ## Features
 - **Price Comparison**: Track and compare prices across various online retailers
@@ -42,7 +42,7 @@ Our new Loot Deals section showcases heavily discounted products with limited-ti
 
 ## Directory Structure
 ```
-DhanBchao/
+MahaLoot/
 ├── client/             # Frontend React application
 │   ├── public/         # Static assets
 │   └── src/            # React source code

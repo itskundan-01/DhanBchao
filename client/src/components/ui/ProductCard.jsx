@@ -10,17 +10,19 @@ import {
   Button,
   Chip,
   IconButton,
-  CardActions
+  CardActions,
+  Tooltip
 } from '@mui/material';
 import { FavoriteBorder, Favorite, CompareArrows } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToWatchlist, removeFromWatchlist } from '../../redux/actions/userActions';
+import { addToCompare } from '../../redux/actions/productActions';
 
-const ProductCard = ({
-  product,
-  isInWatchlist = false,
-  onAddToWatchlist,
-  onRemoveFromWatchlist,
-  onAddToCompare
-}) => {
+const ProductCard = ({ product }) => {
+  const dispatch = useDispatch();
+  const { watchlist } = useSelector(state => state.user);
+  const { isAuthenticated } = useSelector(state => state.auth);
+  
   const {
     id,
     name,
@@ -29,6 +31,34 @@ const ProductCard = ({
     averageRating = 0,
     currentBestPrice = {}
   } = product;
+
+  // Check if product is in watchlist
+  const isInWatchlist = watchlist?.some(item => item.id === id);
+
+  // Format price using Indian numbering system
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('en-IN', { 
+      style: 'currency', 
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(price);
+  };
+
+  const handleAddToWatchlist = () => {
+    if (!isAuthenticated) {
+      // Redirect to auth page or show login prompt
+      return;
+    }
+    dispatch(addToWatchlist(id));
+  };
+
+  const handleRemoveFromWatchlist = () => {
+    dispatch(removeFromWatchlist(id));
+  };
+
+  const handleAddToCompare = () => {
+    dispatch(addToCompare(product));
+  };
 
   return (
     <Card
@@ -76,7 +106,7 @@ const ProductCard = ({
             {currentBestPrice.price ? (
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant="h6" color="primary">
-                  ₹{currentBestPrice.price}
+                  {formatPrice(currentBestPrice.price)}
                 </Typography>
                 <Chip 
                   label={currentBestPrice.store} 
@@ -95,18 +125,22 @@ const ProductCard = ({
 
       <CardActions sx={{ mt: 'auto', justifyContent: 'space-between' }}>
         {isInWatchlist ? (
-          <IconButton color="primary" onClick={() => onRemoveFromWatchlist(id)}>
-            <Favorite />
-          </IconButton>
+          <Tooltip title="Remove from watchlist">
+            <IconButton color="primary" onClick={handleRemoveFromWatchlist}>
+              <Favorite />
+            </IconButton>
+          </Tooltip>
         ) : (
-          <IconButton onClick={() => onAddToWatchlist(id)}>
-            <FavoriteBorder />
-          </IconButton>
+          <Tooltip title={isAuthenticated ? "Add to watchlist" : "Sign in to add to watchlist"}>
+            <IconButton onClick={handleAddToWatchlist}>
+              <FavoriteBorder />
+            </IconButton>
+          </Tooltip>
         )}
         <Button 
           size="small" 
           startIcon={<CompareArrows />}
-          onClick={() => onAddToCompare(product)}
+          onClick={handleAddToCompare}
         >
           Compare
         </Button>

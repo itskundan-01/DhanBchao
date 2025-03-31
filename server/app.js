@@ -66,7 +66,7 @@ app.get('/api/health', async (req, res) => {
 
 // Basic route
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to DhanBchao API' });
+  res.json({ message: 'Welcome to MahaLoot API' });
 });
 
 // Error handling middleware

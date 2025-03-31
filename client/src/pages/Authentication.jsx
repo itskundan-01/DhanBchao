@@ -51,14 +51,15 @@ const Authentication = () => {
   // Get auth state from Redux
   const { loading, error, isAuthenticated } = useSelector(state => state.auth);
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated - update to go to dashboard
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(showToast(
         isLogin ? 'Successfully logged in!' : 'Account created successfully!', 
         'success'
       ));
-      navigate(from, { replace: true });
+      // Redirect to dashboard instead of from/home
+      navigate(isLogin ? '/dashboard' : from, { replace: true });
     }
   }, [isAuthenticated, navigate, from, isLogin, dispatch]);
 

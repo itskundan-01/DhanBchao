@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { 
-  Container, Typography, Grid, Box, Card, CardMedia, CardContent, 
+  Container, Typography, Grid, Card, CardMedia, CardContent, 
   CardActionArea, Breadcrumbs, Link
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
@@ -78,17 +78,17 @@ const PopularCategories = () => {
     },
     { 
       name: 'Fashion',
-      image: '/fashion.avif',
+      image: '/fashion.webp',
       description: 'Clothing, accessories, footwear for all ages'
     },
     { 
       name: 'Home & Kitchen',
-      image: '/home-kitchen.avif',
+      image: '/kitchenhome.jpg',
       description: 'Appliances, decor, furniture, and kitchenware'
     },
     { 
       name: 'Beauty',
-      image: '/beauty.avif',
+      image: '/beauty.webp',
       description: 'Skincare, makeup, fragrances, and personal care'
     },
     { 
