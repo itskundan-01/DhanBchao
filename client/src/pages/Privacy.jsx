@@ -24,7 +24,7 @@ const Privacy = () => {
             1. Introduction
           </Typography>
           <Typography variant="body1" paragraph>
-            DhanBchao ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our price comparison services.
+            MahaLoot ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our price comparison services.
           </Typography>
           <Typography variant="body1" paragraph>
             Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.
@@ -98,8 +98,8 @@ const Privacy = () => {
             If you have questions or comments about this Privacy Policy, please contact us at:
           </Typography>
           <Typography variant="body1" fontWeight="medium">
-            DhanBchao<br />
-            Email: privacy@dhanbchao.com<br />
+            MahaLoot<br />
+            Email: privacy@MahaLoot.com<br />
             Phone: +91 1234567890
           </Typography>
         </Box>

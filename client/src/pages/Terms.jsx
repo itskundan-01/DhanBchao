@@ -24,7 +24,7 @@ const Terms = () => {
             1. Agreement to Terms
           </Typography>
           <Typography variant="body1" paragraph>
-            These Terms of Service constitute a legally binding agreement made between you and DhanBchao concerning your access to and use of our website and services. You agree that by accessing the Site, you have read, understood, and agreed to be bound by all of these Terms of Service.
+            These Terms of Service constitute a legally binding agreement made between you and MahaLoot concerning your access to and use of our website and services. You agree that by accessing the Site, you have read, understood, and agreed to be bound by all of these Terms of Service.
           </Typography>
           <Typography variant="body1" paragraph>
             IF YOU DO NOT AGREE WITH ALL OF THESE TERMS OF SERVICE, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SITE AND YOU MUST DISCONTINUE USE IMMEDIATELY.
@@ -39,7 +39,7 @@ const Terms = () => {
             Unless otherwise indicated, the Site is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Site and their selection and arrangement are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws.
           </Typography>
           <Typography variant="body1" paragraph>
-            Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of DhanBchao.
+            Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of MahaLoot.
           </Typography>
         </Box>
 
@@ -98,8 +98,8 @@ const Terms = () => {
             In order to resolve a complaint or to receive further information regarding the use of the Site, please contact us at:
           </Typography>
           <Typography variant="body1" fontWeight="medium">
-            DhanBchao<br />
-            Email: terms@dhanbchao.com<br />
+            MahaLoot<br />
+            Email: terms@MahaLoot.com<br />
             Phone: +91 1234567890
           </Typography>
         </Box>

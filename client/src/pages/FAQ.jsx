@@ -11,16 +11,16 @@ const FAQ = () => {
   
   const faqs = [
     {
-      question: "What is DhanBchao?",
-      answer: "DhanBchao is a comprehensive price comparison and recommendation platform that helps users make informed purchasing decisions by comparing prices, reviews, and ratings across multiple e-commerce platforms."
+      question: "What is MahaLoot?",
+      answer: "MahaLoot is a comprehensive price comparison and recommendation platform that helps users make informed purchasing decisions by comparing prices, reviews, and ratings across multiple e-commerce platforms."
     },
     {
-      question: "How does DhanBchao work?",
+      question: "How does MahaLoot work?",
       answer: "Our platform scans major e-commerce websites in real-time to collect and analyze product data, prices, and user reviews. We then present this information in a user-friendly format, allowing you to compare options and make the best purchasing decisions."
     },
     {
-      question: "Is DhanBchao free to use?",
-      answer: "Yes, DhanBchao is completely free for all users. Our revenue comes from affiliate partnerships when users make purchases through our links."
+      question: "Is MahaLoot free to use?",
+      answer: "Yes, MahaLoot is completely free for all users. Our revenue comes from affiliate partnerships when users make purchases through our links."
     },
     // Add more FAQs here
   ];
@@ -32,7 +32,7 @@ const FAQ = () => {
           Frequently Asked Questions
         </Typography>
         <Typography variant="h6" color="text.secondary">
-          Find answers to the most common questions about using DhanBchao
+          Find answers to the most common questions about using MahaLoot
         </Typography>
       </Paper>
       
@@ -59,7 +59,7 @@ const FAQ = () => {
       
       <Box sx={{ textAlign: 'center', mt: 4 }}>
         <Typography variant="body1" color="text.secondary">
-          Can't find what you're looking for? Contact our support team at support@dhanbchao.com
+          Can't find what you're looking for? Contact our support team at support@MahaLoot.com
         </Typography>
       </Box>
     </Container>

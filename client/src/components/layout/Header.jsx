@@ -151,7 +151,7 @@ const Header = () => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                DhanBchao
+                MahaLoot
               </Typography>
             </Box>
 
@@ -495,7 +495,7 @@ const Header = () => {
               WebkitTextFillColor: 'transparent',
             }}
           >
-            DhanBchao
+            MahaLoot
           </Typography>
           <IconButton onClick={toggleMobileMenu(false)} edge="end">
             <ChevronRight />

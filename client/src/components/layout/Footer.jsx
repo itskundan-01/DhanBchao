@@ -19,7 +19,7 @@ const Footer = () => {
         <Grid container spacing={4} justifyContent="space-evenly">
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6" color="text.primary" gutterBottom>
-              DhanBchao
+              MahaLoot
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Making smart shopping decisions easier
@@ -73,7 +73,7 @@ const Footer = () => {
         </Grid>
         <Divider sx={{ my: 3 }} />
         <Typography variant="body2" color="text.secondary" align="center">
-          © {new Date().getFullYear()} DhanBchao. All rights reserved.
+          © {new Date().getFullYear()} MahaLoot. All rights reserved.
         </Typography>
       </Container>
     </Box>

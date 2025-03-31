@@ -118,11 +118,11 @@ const Contact = () => {
                       secondary={
                         <Typography 
                           component="a" 
-                          href="mailto:support@dhanbchao.com" 
+                          href="mailto:support@MahaLoot.com" 
                           color="primary"
                           sx={{ textDecoration: 'none' }}
                         >
-                          support@dhanbchao.com
+                          support@MahaLoot.com
                         </Typography>
                       } 
                     />

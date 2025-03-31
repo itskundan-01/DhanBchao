@@ -25,7 +25,7 @@ const BlogPost = () => {
       <h2>Why Price Comparison Matters</h2>
       <p>Price comparison isn't just about finding the lowest price. It's about understanding the overall value of your purchase. This includes considering factors like warranty, shipping costs, return policies, and seller reputation.</p>
       
-      <p>DhanBchao's platform simplifies this process by gathering information from multiple sources and presenting it in a clear, easy-to-understand format. Our AI technology even analyzes price history to determine if a "sale" is actually a good deal or just a marketing tactic.</p>
+      <p>MahaLoot's platform simplifies this process by gathering information from multiple sources and presenting it in a clear, easy-to-understand format. Our AI technology even analyzes price history to determine if a "sale" is actually a good deal or just a marketing tactic.</p>
       
       <h2>Tips for Effective Price Comparison</h2>
       <ul>
@@ -33,7 +33,7 @@ const BlogPost = () => {
         <li>Check price history to ensure you're getting a genuine discount</li>
         <li>Consider warranty terms and return policies</li>
         <li>Read reviews from multiple sources</li>
-        <li>Use DhanBchao tools to automate comparison across platforms</li>
+        <li>Use MahaLoot tools to automate comparison across platforms</li>
       </ul>
       
       <h2>Using AI to Enhance Your Shopping Experience</h2>

@@ -285,7 +285,7 @@ const Home = () => {
             gutterBottom
             sx={{ fontWeight: 700 }}
           >
-            How DhanBchao Works
+            How MahaLoot Works
           </Typography>
           <Typography 
             variant="h6" 

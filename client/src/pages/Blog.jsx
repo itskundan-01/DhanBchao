@@ -46,7 +46,7 @@ const Blog = () => {
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Box sx={{ mb: 6 }}>
         <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
-          DhanBchao Blog
+          MahaLoot Blog
         </Typography>
         <Typography variant="h6" color="text.secondary">
           Shopping tips, product comparisons, and money-saving advice

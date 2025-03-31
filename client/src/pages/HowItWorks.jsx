@@ -30,7 +30,7 @@ const HowItWorks = () => {
           }}
         >
           <Typography variant="h2" component="h1" gutterBottom fontWeight="bold">
-            How DhanBchao Works
+            How MahaLoot Works
           </Typography>
           <Typography variant="h5" sx={{ mb: 4, maxWidth: 800, mx: 'auto' }}>
             Our AI-powered platform helps you make smarter shopping decisions and save money with intelligent price comparison.
@@ -70,7 +70,7 @@ const HowItWorks = () => {
             {
               icon: <Search sx={{ fontSize: 60, color: '#4361ee' }} />,
               title: "Search & Find",
-              description: "Enter the product you're interested in and DhanBchao will search across major e-commerce platforms in real-time."
+              description: "Enter the product you're interested in and MahaLoot will search across major e-commerce platforms in real-time."
             },
             {
               icon: <CompareArrows sx={{ fontSize: 60, color: '#3a0ca3' }} />,
@@ -171,7 +171,7 @@ const HowItWorks = () => {
                 What Makes Us Different
               </Typography>
               <Typography variant="body1" paragraph>
-                DhanBchao leverages cutting-edge artificial intelligence and machine learning to revolutionize how you shop online. Our platform doesn't just compare prices—it analyzes multiple factors to help you make truly informed decisions.
+                MahaLoot leverages cutting-edge artificial intelligence and machine learning to revolutionize how you shop online. Our platform doesn't just compare prices—it analyzes multiple factors to help you make truly informed decisions.
               </Typography>
               
               <List sx={{ mt: 3 }}>
@@ -297,7 +297,7 @@ const HowItWorks = () => {
                 Ready to Start Saving?
               </Typography>
               <Typography variant="h6" paragraph sx={{ mb: 4 }}>
-                Join thousands of smart shoppers who are already saving time and money with DhanBchao.
+                Join thousands of smart shoppers who are already saving time and money with MahaLoot.
               </Typography>
               
               <List>
@@ -361,14 +361,14 @@ const HowItWorks = () => {
             gutterBottom
             sx={{ mb: 5, maxWidth: 700, mx: 'auto' }}
           >
-            Have questions about how DhanBchao works? Here are some common questions we receive.
+            Have questions about how MahaLoot works? Here are some common questions we receive.
           </Typography>
           
           <Grid container spacing={3}>
             {[
               {
-                question: "Is DhanBchao completely free to use?",
-                answer: "Yes, DhanBchao is completely free for all users. We make money through affiliate partnerships when you purchase through our links, but this never affects the prices you see."
+                question: "Is MahaLoot completely free to use?",
+                answer: "Yes, MahaLoot is completely free for all users. We make money through affiliate partnerships when you purchase through our links, but this never affects the prices you see."
               },
               {
                 question: "How accurate are the price comparisons?",
@@ -376,7 +376,7 @@ const HowItWorks = () => {
               },
               {
                 question: "Can I track price history for products?",
-                answer: "Yes, DhanBchao tracks price history for all products in our database, allowing you to see how prices have changed over time and identify the best time to buy."
+                answer: "Yes, MahaLoot tracks price history for all products in our database, allowing you to see how prices have changed over time and identify the best time to buy."
               },
               {
                 question: "How do I set up price alerts?",
@@ -416,7 +416,7 @@ const HowItWorks = () => {
             Start Making Smarter Shopping Decisions Today
           </Typography>
           <Typography variant="h6" color="text.secondary" paragraph sx={{ maxWidth: 700, mx: 'auto' }}>
-            Join DhanBchao and never overpay for your favorite products again.
+            Join MahaLoot and never overpay for your favorite products again.
           </Typography>
           <Button
             variant="contained"
