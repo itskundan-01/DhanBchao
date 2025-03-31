@@ -1,44 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Container, Typography, Grid, Paper, Box, 
-  Avatar, Button, TextField, Divider, List,
-  ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction,
-  Tab, Tabs, IconButton, Chip, Switch, FormControlLabel, MenuItem,
-  Alert, CircularProgress
+import {
+  Container, Typography, Grid, Paper, Box, Tabs, Tab,
+  TextField, Button, Avatar, Switch, FormControlLabel,
+  Divider, IconButton, List, ListItem, ListItemText,
+  ListItemSecondaryAction, ListItemAvatar, Alert,
+  MenuItem, Chip
 } from '@mui/material';
-import { 
-  Edit, Notifications, Favorite, 
-  History, Delete, ShoppingBag, Save, Cancel 
+import {
+  Edit, Save, Visibility, VisibilityOff,
+  Delete, Favorite, History, Settings, AccountCircle,
+  ShoppingBag, Cancel
 } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-  updateProfile, 
-  updatePassword, 
-  fetchWatchlist, 
-  removeFromWatchlist 
-} from '../redux/actions/userActions';
+import { updateProfile, updatePassword, fetchWatchlist, removeFromWatchlist } from '../redux/actions/userActions';
 import { showToast } from '../redux/actions/uiActions';
 import Loader from '../components/ui/Loader';
 import ErrorAlert from '../components/ui/ErrorAlert';
 
 const Profile = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  
-  // Get user data from Redux store
-  const { user } = useSelector(state => state.auth);
-  const { 
-    profile, 
-    watchlist, 
-    history: browsingHistory, 
-    loading, 
-    success, 
-    error 
-  } = useSelector(state => state.user);
-
   const [tabValue, setTabValue] = useState(0);
   const [editMode, setEditMode] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [profileData, setProfileData] = useState({
     name: '',
     email: '',
@@ -49,16 +32,38 @@ const Profile = () => {
       emailNotifications: true
     }
   });
-
-  // Password state
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   });
-
   const [passwordError, setPasswordError] = useState('');
-
+  
+  // Mock browsing history for demonstration
+  const browsingHistory = [
+    {
+      id: 'p1',
+      name: 'Samsung Galaxy S21',
+      image: '/sample-product1.jpg',
+      viewedDate: new Date().toISOString()
+    },
+    {
+      id: 'p2',
+      name: 'iPhone 13',
+      image: '/sample-product2.jpg',
+      viewedDate: new Date(Date.now() - 86400000).toISOString()
+    }
+  ];
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const { user } = useSelector(state => state.auth);
+  const { watchlist, loading, error, success } = useSelector(state => state.user);
+  
+  // Renamed to avoid warning
+  const { profile: profileSuccess } = success || {};
+  
   // Initialize profile data from Redux state
   useEffect(() => {
     if (user) {
@@ -108,7 +113,7 @@ const Profile = () => {
 
   // Show toast notification when profile update is successful
   useEffect(() => {
-    if (success.profile) {
+    if (profileSuccess) {
       dispatch(showToast('Profile updated successfully', 'success'));
       setEditMode(false);
     }
@@ -120,7 +125,7 @@ const Profile = () => {
         confirmPassword: ''
       });
     }
-  }, [dispatch, success]);
+  }, [dispatch, profileSuccess, success]);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -219,7 +224,7 @@ const Profile = () => {
           <Tab icon={<Avatar sx={{ width: 24, height: 24 }} />} iconPosition="start" label="Profile" />
           <Tab icon={<Favorite sx={{ width: 24, height: 24 }} />} iconPosition="start" label="Watchlist" />
           <Tab icon={<History sx={{ width: 24, height: 24 }} />} iconPosition="start" label="History" />
-          <Tab icon={<Notifications sx={{ width: 24, height: 24 }} />} iconPosition="start" label="Notifications" />
+          <Tab icon={<Settings sx={{ width: 24, height: 24 }} />} iconPosition="start" label="Settings" />
         </Tabs>
       </Box>
 
@@ -316,37 +321,58 @@ const Profile = () => {
                       <TextField
                         label="Current Password"
                         name="currentPassword"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         value={passwordData.currentPassword}
                         onChange={handlePasswordChange}
                         fullWidth
                         margin="normal"
                         required
+                        InputProps={{
+                          endAdornment: (
+                            <IconButton onClick={() => setShowPassword(!showPassword)}>
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          )
+                        }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         label="New Password"
                         name="newPassword"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         value={passwordData.newPassword}
                         onChange={handlePasswordChange}
                         fullWidth
                         margin="normal"
                         required
                         helperText="Minimum 6 characters"
+                        InputProps={{
+                          endAdornment: (
+                            <IconButton onClick={() => setShowPassword(!showPassword)}>
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          )
+                        }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         label="Confirm New Password"
                         name="confirmPassword"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         value={passwordData.confirmPassword}
                         onChange={handlePasswordChange}
                         fullWidth
                         margin="normal"
                         required
+                        InputProps={{
+                          endAdornment: (
+                            <IconButton onClick={() => setShowPassword(!showPassword)}>
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          )
+                        }}
                       />
                     </Grid>
                     <Grid item xs={12}>

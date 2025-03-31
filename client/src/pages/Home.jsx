@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { 
-  Container, Typography, Grid, Box, Button, Paper, Card, CardMedia, 
-  CardContent, CardActionArea, Stack, Avatar, Chip, Rating,
-  List, ListItem, ListItemText, ListItemIcon, Divider
+  Container, Typography, Grid, Box, Button, Paper, Card, 
+  CardContent, CardMedia, Rating, CardActionArea,
+  Stack, Chip, Avatar, List, ListItem, ListItemIcon, ListItemText
 } from '@mui/material';
 import { 
-  ArrowForward, Search, CompareArrows, RateReview, 
-  Savings, ShoppingBag, CheckCircle, LocalOffer, Star,
-  Whatshot, ArrowDownward, ArrowRightAlt, 
-  SmartToy, Speed, VerifiedUser, LocalMall,
-  FlashOn, Bolt, Discount, TrendingDown, Timer,
-  LocalFireDepartment
+  ArrowForward, Search, CompareArrows, 
+  Timer, TrendingDown, Discount, FlashOn,
+  SmartToy, Savings, ArrowRightAlt, CheckCircle,
+  Whatshot, Bolt, LocalFireDepartment, RateReview,
+  VerifiedUser, LocalMall, ArrowDownward, Speed
 } from '@mui/icons-material';
 
 // Sample featured products
@@ -286,7 +285,7 @@ const Home = () => {
             gutterBottom
             sx={{ fontWeight: 700 }}
           >
-            How DhanBchao Works
+            How MahaLoot Works
           </Typography>
           <Typography 
             variant="h6" 
@@ -442,7 +441,7 @@ const Home = () => {
                 >
                   <CardMedia
                     component="img"
-                    image="/loot-deals-preview.jpg"
+                    image="lootimg.jpeg"
                     alt="Loot Deals Preview"
                     sx={{ 
                       height: '100%',
@@ -469,7 +468,7 @@ const Home = () => {
                         mb: 1
                       }}
                     >
-                      Flash Deals up to 80% Off
+                      Flash Deals up to 90% Off
                     </Typography>
                     <Typography 
                       variant="body1" 
@@ -975,7 +974,7 @@ const Home = () => {
                 }}
               >
                 <img 
-                  src="/ai-analysis.jpg" 
+                  src="/aianalysis.jpeg" 
                   alt="AI Analysis Dashboard" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />

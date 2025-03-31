@@ -1,25 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  Box, 
+  InputBase, 
+  IconButton,
+  Popper,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Divider,
+  CircularProgress
+} from '@mui/material';
+import { Search, Clear } from '@mui/icons-material';
 import { styled, alpha } from '@mui/material/styles';
-import { InputBase, Box, IconButton, Paper, List, ListItem, ListItemText, Typography } from '@mui/material';
-import { Search as SearchIcon, Clear } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { searchProducts } from '../../redux/actions/productActions';
 import useDebounce from '../../hooks/useDebounce';
 
-const SearchWrapper = styled('div')(({ theme }) => ({
+// Styled search bar container
+const SearchContainer = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
+  marginLeft: theme.spacing(1),
+  marginRight: theme.spacing(1),
   width: '100%',
   [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
     width: 'auto',
   },
 }));
 
+// Styled search icon
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -30,9 +47,9 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
+// Styled input base
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
-  width: '100%',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
@@ -49,102 +66,162 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-  const [showResults, setShowResults] = useState(false);
-  const debouncedQuery = useDebounce(query, 300);
-  const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
-  // Search suggestions logic 
+  // Get search results from redux store
+  const { searchResults, loading } = useSelector(state => state.products);
+  
+  // Debounce search query to avoid excessive API calls
+  const debouncedQuery = useDebounce(query, 500);
+  
+  // Perform search when debounced query changes
   React.useEffect(() => {
-    if (debouncedQuery.length > 2) {
-      dispatch(searchProducts(debouncedQuery))
-        .then(action => {
-          if (action.type === 'SEARCH_PRODUCTS_SUCCESS') {
-            setResults(action.payload.data.slice(0, 5));
-            setShowResults(true);
-          }
-        });
-    } else {
-      setResults([]);
-      setShowResults(false);
+    if (debouncedQuery && debouncedQuery.length >= 2) {
+      dispatch(searchProducts(debouncedQuery));
     }
   }, [debouncedQuery, dispatch]);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (query.trim()) {
-      setShowResults(false);
-      navigate(`/search?q=${encodeURIComponent(query)}`);
-    }
-  };
-
-  const handleClear = () => {
-    setQuery('');
-    setResults([]);
-    setShowResults(false);
+  
+  // Handle input change
+  const handleQueryChange = (event) => {
+    const newQuery = event.target.value;
+    setQuery(newQuery);
+    setAnchorEl(event.currentTarget);
   };
   
+  // Clear search
+  const handleClearSearch = () => {
+    setQuery('');
+    setAnchorEl(null);
+  };
+  
+  // Handle search submission
+  const handleSearch = (event) => {
+    event.preventDefault();
+    if (query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+      setAnchorEl(null);
+    }
+  };
+  
+  // Handle clicking on a search result
+  const handleResultClick = (productId) => {
+    navigate(`/product/${productId}`);
+    setAnchorEl(null);
+    setQuery('');
+  };
+  
+  // Determine if popper should be open
+  const open = Boolean(anchorEl) && query.length >= 2;
+  const id = open ? 'search-popper' : undefined;
+
   return (
-    <Box sx={{ position: 'relative' }}>
-      <SearchWrapper>
+    <Box sx={{ flexGrow: 1, display: 'flex', maxWidth: { xs: '100%', md: 350 } }}>
+      <SearchContainer>
+        <SearchIconWrapper>
+          <Search />
+        </SearchIconWrapper>
         <form onSubmit={handleSearch}>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
           <StyledInputBase
-            placeholder="Search products..."
+            placeholder="Search products…"
             inputProps={{ 'aria-label': 'search' }}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => query.length > 2 && setShowResults(true)}
-            onBlur={() => setTimeout(() => setShowResults(false), 200)}
+            onChange={handleQueryChange}
+            endAdornment={
+              query ? (
+                <IconButton 
+                  size="small" 
+                  sx={{ mr: 0.5 }} 
+                  onClick={handleClearSearch}
+                  aria-label="clear search"
+                >
+                  <Clear fontSize="small" />
+                </IconButton>
+              ) : null
+            }
           />
-          {query && (
-            <IconButton size="small" sx={{ position: 'absolute', right: 5, top: '50%', transform: 'translateY(-50%)' }} onClick={handleClear}>
-              <Clear fontSize="small" />
-            </IconButton>
-          )}
         </form>
-      </SearchWrapper>
+      </SearchContainer>
       
-      {showResults && results.length > 0 && (
-        <Paper
-          elevation={3}
-          sx={{
-            position: 'absolute',
-            top: '100%',
-            right: 0,
-            left: 0,
-            zIndex: 1000,
-            maxHeight: '300px',
-            overflow: 'auto'
+      <Popper
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        placement="bottom-start"
+        sx={{ width: { xs: '90vw', sm: 400 }, zIndex: 1301 }}
+      >
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            maxHeight: 400, 
+            overflow: 'auto',
+            mt: 0.5,
+            border: '1px solid',
+            borderColor: 'divider'
           }}
         >
-          <List>
-            {results.map(item => (
+          {loading.search ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+              <CircularProgress size={24} />
+            </Box>
+          ) : searchResults && searchResults.length > 0 ? (
+            <List>
+              {searchResults.slice(0, 6).map((product) => (
+                <React.Fragment key={product.id}>
+                  <ListItem button onClick={() => handleResultClick(product.id)}>
+                    <Box 
+                      component="img" 
+                      src={product.image} 
+                      alt={product.name}
+                      sx={{ 
+                        width: 50, 
+                        height: 50, 
+                        mr: 2, 
+                        objectFit: 'contain',
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        borderRadius: 1
+                      }} 
+                    />
+                    <ListItemText 
+                      primary={product.name} 
+                      secondary={
+                        <Typography variant="body2" color="text.secondary">
+                          {product.brand} • {product.currentBestPrice?.price ? 
+                            `₹${product.currentBestPrice.price}` : 'Price not available'}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                  <Divider />
+                </React.Fragment>
+              ))}
               <ListItem 
                 button 
-                key={item.id}
                 onClick={() => {
-                  navigate(`/product/${item.id}`);
-                  setShowResults(false);
+                  navigate(`/search?q=${encodeURIComponent(query)}`);
+                  setAnchorEl(null);
                 }}
-                sx={{ '&:hover': { bgcolor: 'background.default' } }}
               >
                 <ListItemText 
-                  primary={item.name} 
-                  secondary={
-                    <Typography variant="body2" color="text.secondary">
-                      {item.brand} • ₹{item.currentBestPrice?.price || 'N/A'}
-                    </Typography>
-                  }
+                  primary={`See all results for "${query}"`}
+                  primaryTypographyProps={{
+                    color: 'primary',
+                    textAlign: 'center'
+                  }}
                 />
               </ListItem>
-            ))}
-          </List>
+            </List>
+          ) : query.length >= 2 ? (
+            <Box sx={{ p: 2 }}>
+              <Typography align="center" color="text.secondary">
+                No products found for "{query}"
+              </Typography>
+            </Box>
+          ) : null}
         </Paper>
-      )}
+      </Popper>
     </Box>
   );
 };

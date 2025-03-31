@@ -12,6 +12,7 @@ import {
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { showToast } from '../redux/actions/uiActions';
 // Import these actions when you implement them
 // import { fetchLootDeals } from '../redux/actions/productActions';
 // import { addToWatchlist, removeFromWatchlist } from '../redux/actions/userActions';

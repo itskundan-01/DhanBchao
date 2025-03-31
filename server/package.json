@@ -1,7 +1,7 @@
 {
-  "name": "dhanbchao-server",
+  "name": "MahaLoot-server",
   "version": "1.0.0",
-  "description": "Backend for DhanBchao product comparison platform",
+  "description": "Backend for MahaLoot product comparison platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
